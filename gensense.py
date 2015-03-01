@@ -1,6 +1,8 @@
 import gensim
 
 DEBUG = True
+STOP_LIST = set("for a an of the and to in".split())
+
 
 class Sentence(list):
     """`Sentence' is an object representing a sentence. It consists of a
@@ -49,3 +51,26 @@ class Sentence(list):
                     print ("Word `" + word +
                            "' was not found in model! Aborting ...")
                     return None
+
+    def __str__(self):
+        """Overrides the __str__() method to only return the sentence as
+        a list of words (thus ignoring the vector space representation).
+        """
+
+        return str([x[0] for x in self])
+
+    def removeStopWords(self, stop_list=STOP_LIST):
+        """Iterates over all words in `self' and removes those found in
+        `stop_list'. This method operates on the object's state and does
+        not return anything.
+
+        @params:
+            stop_list : list
+                List of strings of words
+        @returns:
+            None
+        """
+        for i, v in enumerate(self):
+            if v[0] in stop_list:
+                print ("`" + str(self.pop(i)[0]) +
+                       "' has been removed from the sentence.")
