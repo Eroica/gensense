@@ -3,29 +3,31 @@ import numpy
 import scipy.spatial
 import math
 from copy import deepcopy
+from collections import OrderedDict
+import itertools
 
 DEBUG = True
 STOP_LIST = set("for a an of the and to in".split())
 
 
-class Sentence(list):
-    """`Sentence' is an object representing a sentence. It consists of a
-    list of words. Every word is represented by the word as a string,
-    and its vector space representation in a given model.
+class Sentence(OrderedDict):
+    """`Sentence' is an object representing a sentence. It is an
+    OrderedDict in which every word is a key and its vector space
+    representation its value.
 
     """
 
     def __init__(self, sentence, model, strict=False):
-        """Creates a `Sentence' object. A sentence is represented in a
-        list of string-value pairs: `string' is the individual word,
-        and `value' its vector space representation in a given model.
+        """Creates a `Sentence' object. A sentence is represented as an
+        OrderedDict in which every word is a key with the corresponding
+        vector space representation of that word as a value.
 
         For instance:
 
-        [   ("this",    [0, 0, 1]),
-            ("is",      [0, 1, 0]),
-            ("an",      [1, 0, 0]),
-            ("example", [1, 1, 1])  ]
+        [   "this":    [0, 0, 1]),
+            "is":      [0, 1, 0]),
+            "an":      [1, 0, 0]),
+            "example": [1, 1, 1])  ]
 
         @params:
             sentence : str
@@ -35,7 +37,7 @@ class Sentence(list):
                 A model created by gensim.models.word2vec.Word2Vec()
 
             strict=False : boolean
-                (Optional) specifies whether words not found in model
+                (Optional) specifies whether words not found in `model'
                 should be ignored. If True, Sentence creation will
                 abort.
 
@@ -43,9 +45,12 @@ class Sentence(list):
             Sentence : Sentence
         """
 
+        super(Sentence, self).__init__()
+
         for word in sentence.split():
             try:
-                self.append((word, model[word]))
+                self[word] = model[word]
+                # tmp.append((word, model[word]))
             except KeyError:
                 if not strict:
                     print ("Word `" + word +
@@ -56,17 +61,20 @@ class Sentence(list):
                            "' was not found in model! Aborting ...")
                     return None
 
+        self.sentenceVector = reduce(lambda x, y: numpy.multiply(x,y),
+                                     [self[x] for x in self])
+
     def __str__(self):
         """Overrides the __str__() method to only return the sentence as
         a list of words (thus ignoring the vector space representation).
 
-            [("this", [0, 0, 1]), ("is", [0, 1, 0]),
-             ("an", [1, 0, 0]), ("example", [1, 1, 1])]
+            Sentence([("this", [0, 0, 1]), ("is", [0, 1, 0]),
+             ("an", [1, 0, 0]), ("example", [1, 1, 1])])
 
-            => ["this", "is", "an", "example"]
+            => "this is an example"
         """
 
-        return str([x[0] for x in self])
+        return " ".join((x for x in self.keys()))
 
     def removeStopWords(self, stop_list=STOP_LIST):
         """Iterates over all words in `self' and removes those found in
@@ -79,31 +87,33 @@ class Sentence(list):
         @returns:
             None
         """
-        for i, v in enumerate(self):
-            if v[0] in stop_list:
-                print ("`" + str(self.pop(i)[0]) +
-                       "' has been removed from the sentence.")
+        for word in self.keys():
+            if word in stop_list:
+                self.pop(word)
+                print "`" + word + "' has been removed from the sentence."
+
+        self.updateSentenceVector()
+
+    def updateSentenceVector(self):
+        """
+        """
+
+        self.sentenceVector = reduce(lambda x, y: numpy.multiply(x,y),
+                                     [self[x] for x in self])
 
     def clusterize(self):
         """
         """
 
-        # self = [
-        #         ("this", numpy.array(   [ 1,0 ,0])),
-        #         ("is", numpy.array(     [ 0,2 ,0])),
-        #         ("an", numpy.array([      0,0 ,3])),
-        #         ("example", numpy.array( [4,4 ,4])),
-        #         ("sentence", numpy.array([5,5 ,5]))]
+        first_pair = list(self.items()[0])
 
-        first_word = self[0]
-
-        clusters = [[first_word[0]]]
-        cluster_sums = [deepcopy(first_word[1])]
+        clusters = [[first_pair[0]]]
+        cluster_sums = [deepcopy(first_pair[1])]
 
         rands = numpy.random.rand(len(self))
         pnew = 1.0
 
-        for i, word in enumerate(self[1:]):
+        for i, word in enumerate(self.items()[1:]):
             maxSim = float("inf")
 
             for j, c in enumerate(cluster_sums):
