@@ -49,7 +49,7 @@ class Sentence(OrderedDict):
 
         for word in sentence.split():
             try:
-                self[word] = model[word]
+                self[word] = deepcopy(model[word])
                 # tmp.append((word, model[word]))
             except KeyError:
                 if not strict:
@@ -63,6 +63,10 @@ class Sentence(OrderedDict):
 
         self.sentenceVector = reduce(lambda x, y: numpy.multiply(x,y),
                                      [self[x] for x in self])
+        self.clusters = []
+        self.cluster_sums = []
+
+        self.clusterize()
 
     def __str__(self):
         """Overrides the __str__() method to only return the sentence as
@@ -101,14 +105,32 @@ class Sentence(OrderedDict):
         self.sentenceVector = reduce(lambda x, y: numpy.multiply(x,y),
                                      [self[x] for x in self])
 
+    def sv_additive(self):
+
+        sv = reduce(lambda x, y: x + y, self.values())
+
+        return sv
+
+
+    def sv_multiplicative(self):
+
+        sv = reduce(lambda x, y: numpy.multiply(x, y),
+                    self.values())
+
+        return sv
+
+
+    def sv_kintsch(self):
+        pass
+
     def clusterize(self):
         """
         """
 
         first_pair = list(self.items()[0])
 
-        clusters = [[first_pair[0]]]
-        cluster_sums = [deepcopy(first_pair[1])]
+        self.clusters = [[first_pair[0]]]
+        self.cluster_sums = [deepcopy(first_pair[1])]
 
         rands = numpy.random.rand(len(self))
         pnew = 1.0
@@ -116,7 +138,7 @@ class Sentence(OrderedDict):
         for i, word in enumerate(self.items()[1:]):
             maxSim = float("inf")
 
-            for j, c in enumerate(cluster_sums):
+            for j, c in enumerate(self.cluster_sums):
                 sim = abs(scipy.spatial.distance.cosine(word[1], c))
                 sim = float("inf") if math.isnan(sim) else sim
 
@@ -125,20 +147,18 @@ class Sentence(OrderedDict):
                     maxClusterIndex = int(j)
 
             if maxSim > pnew and rands[i+1] < pnew:
-                clusters.append([word[0]])
-                cluster_sums.append(word[1])
-                pnew = 1.0 / (1 + len(clusters))
+                self.clusters.append([deepcopy(word[0])])
+                self.cluster_sums.append(deepcopy(word[1]))
+                pnew = 1.0 / (1 + len(self.clusters))
             else:
-                if maxClusterIndex == 0:
-                    print cluster_sums[0]
-                clusters[maxClusterIndex].append(word[0])
-                cluster_sums[maxClusterIndex] += word[1]
-
-        # print self
-
-        return (clusters, cluster_sums)
+                self.clusters[maxClusterIndex].append(word[0])
+                self.cluster_sums[maxClusterIndex] += word[1]
 
 
     def returnVectors(self):
         return [w[1] for w in self]
 
+model = gensim.models.word2vec.Word2Vec.load("vectors.bin")
+
+def similarity(sentence1, sentence2, ):
+    return 1 - scipy.spatial.distance.cosine(sentence1, sentence2)
