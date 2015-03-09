@@ -61,8 +61,6 @@ class Sentence(OrderedDict):
                            "' was not found in model! Aborting ...")
                     return None
 
-        self.sentenceVector = reduce(lambda x, y: numpy.multiply(x,y),
-                                     [self[x] for x in self])
         self.clusters = []
         self.cluster_sums = []
 
@@ -127,7 +125,7 @@ class Sentence(OrderedDict):
         """
         """
 
-        first_pair = list(self.items()[0])
+        first_pair = tuple(self.items()[0])
 
         self.clusters = [[first_pair[0]]]
         self.cluster_sums = [deepcopy(first_pair[1])]
@@ -158,7 +156,7 @@ class Sentence(OrderedDict):
     def returnVectors(self):
         return [w[1] for w in self]
 
-model = gensim.models.word2vec.Word2Vec.load("vectors.bin")
+model = gensim.models.word2vec.Word2Vec.load("share/vectors.bin")
 
 def similarity(sentence1, sentence2, ):
     return 1 - scipy.spatial.distance.cosine(sentence1, sentence2)
