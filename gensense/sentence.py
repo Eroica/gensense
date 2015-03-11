@@ -177,23 +177,6 @@ def sv_multiplicative(sentence):
     return reduce(lambda x, y: numpy.multiply(x, y),
                   sentence.values())
 
-def cosine_to_integer(grade):
-    """Since Michell's and Lapata's original evaluation used numbers
-    from 1 to 7 to grade sentence similarity, this method takes a
-    cosine similarity (a number between 0.0 and 1.0) and maps them
-    to either 1, 2, 3, 4, 5, 6, or 7.
-
-    :rtype: int
-
-    :Example:
-
-    >>> gensense.sentence.cosine_to_integer(0.45)
-    >>> 4.0
-    """
-
-    # grads = map(lambda x: x * (1.0/7), [x for x in range(0, 8)])
-    return int(math.ceil(grade * 7))
-
 
 def similarity(sentence1, sentence2, sv_function=sv_additive):
     """Returns the cosine similarity between two sentences, calculated

@@ -12,6 +12,13 @@ class EvaluationCorpus(list):
     The two sentences being compared, and their similarity grade (an
     integer between 1 and 7).
 
+    This is a huge data structure, and as such should only be used by
+    stateless iterators, to avoid too much memory allocation and long
+    waiting times.
+
+    Examples on how to use this data structure is found in
+    `gensense.evaluate'.
+
     """
 
     def __init__(self, evaluation_file="share/share.html"):
