@@ -9,9 +9,11 @@ import math
 
 from copy import deepcopy
 from collections import OrderedDict
+from nltk.corpus import stopwords
 
 DEBUG = True
-STOP_LIST = set("for a an of the and to in".split())
+# STOP_WORDS = set("for a an of the and to in".split())
+STOP_WORDS = stopwords.words("english")
 MODEL = gensim.models.word2vec.Word2Vec.load("share/vectors.bin")
 
 class Sentence(OrderedDict):
@@ -75,17 +77,21 @@ class Sentence(OrderedDict):
 
         return " ".join((x for x in self.keys()))
 
-    def removeStopWords(self, stop_list=STOP_LIST):
+    def removeStopWords(self, stop_words=STOP_WORDS):
         """Iterates over all words in `self' and removes those found in
-        `stop_list'. This method operates on this object's state and
-        does not return anything.
+        `stop_words'. By default, those stop words found in NLTK's
+        corpus of English stop words are used.
 
-        :params: stop_list: List of strings of words that can be removed
-        :type: stop_list: list
+        This method operates on this object's state and does not
+        return anything.
+
+        :params: stop_words:
+            List of strings of words that can be removed
+        :type: stop_words: list
         """
 
         for word in self.keys():
-            if word in stop_list:
+            if word in stop_words:
                 self.pop(word)
                 print "`" + word + "' has been removed from the sentence."
 
