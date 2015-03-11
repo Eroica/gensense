@@ -18,8 +18,8 @@ MODEL = gensim.models.word2vec.Word2Vec.load("share/vectors.bin")
 
 class Sentence(OrderedDict):
     """`Sentence' is an object representing a sentence. It is an
-    OrderedDict in which every word is a key and its vector space
-    representation its value.
+    OrderedDict in which every word is a key and that word's vector
+    space representation its value.
 
     """
 
@@ -54,7 +54,6 @@ class Sentence(OrderedDict):
         for word in sentence.split():
             try:
                 self[word] = deepcopy(model[word])
-                # tmp.append((word, model[word]))
             except KeyError:
                 if not strict:
                     print ("Word `" + word +
@@ -93,7 +92,9 @@ class Sentence(OrderedDict):
         for word in self.keys():
             if word in stop_words:
                 self.pop(word)
-                print "`" + word + "' has been removed from the sentence."
+
+                if DEBUG:
+                    print "`" + word + "' has been removed from the sentence."
 
     def clusterize(self):
         """Maps each word of a sentence to an appropriate cluster by
