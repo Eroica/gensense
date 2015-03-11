@@ -27,7 +27,7 @@ class Sentence(OrderedDict):
         """Creates a `Sentence' object by evaluating a string
         `sentence'. For each word in `sentence', that word's vector
         space representation is looked up in `model'. If it exists,
-        they are appended to `self', unless `strict' is set to False,
+        they are appended to `self', unless `strict' is set to True,
         then this process will abort.
 
         :Example:
