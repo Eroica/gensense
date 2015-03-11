@@ -24,9 +24,11 @@ class Sentence(OrderedDict):
     """
 
     def __init__(self, sentence, model=MODEL, strict=False):
-        """Creates a `Sentence' object. A sentence is represented as an
-        OrderedDict in which every word is a key with the corresponding
-        vector space representation of that word as a value.
+        """Creates a `Sentence' object by evaluating a string
+        `sentence'. For each word in `sentence', that word's vector
+        space representation is looked up in `model'. If it exists,
+        they are appended to `self', unless `strict' is set to False,
+        then this process will abort.
 
         :Example:
 
