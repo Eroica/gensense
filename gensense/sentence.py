@@ -64,7 +64,7 @@ class Sentence(OrderedDict):
                 else:
                     print ("Word `" + word +
                            "' was not found in model! Aborting ...")
-                    return None
+                    raise Exception()
 
         self.clusters = []
         self.cluster_sums = []
@@ -74,6 +74,13 @@ class Sentence(OrderedDict):
     def __str__(self):
         """The __str__() method is overwritten to only return the
         sentence's words (thus ignoring each word's vector).
+
+        :Example:
+
+        >>> s = gensense.sentence.Sentence("this is an example")
+        >>> print s
+        this is an example
+
         """
 
         return " ".join((x for x in self.keys()))
@@ -89,6 +96,15 @@ class Sentence(OrderedDict):
         :params: stop_words:
             List of strings of words that can be removed
         :type: stop_words: list
+
+        :Example:
+
+        >>> s = gensense.sentence.Sentence("this is an example")
+        >>> print s
+        this is an example
+        >>> s.removeStopWords()
+        >>> print s
+        example
         """
 
         for word in self.keys():
@@ -141,6 +157,8 @@ def sv_additive(sentence):
     """Returns a sentence vector where sv_i is the sum of each i-th
     component of every word vector.
 
+    :params: sentence: The sentence whose sentence vector to calculate
+    :type: sentence: Sentence
     :rtype: float
     """
 
@@ -151,6 +169,8 @@ def sv_multiplicative(sentence):
     """Returns a sentence vector where sv_i is the product of all i-th
     components of every word vector.
 
+    :params: sentence: The sentence whose sentence vector to calculate
+    :type: sentence: Sentence
     :rtype: float
     """
 
