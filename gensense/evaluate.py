@@ -1,5 +1,6 @@
 from __future__ import print_function
 from copy import deepcopy
+from collections import defaultdict
 
 from corpus import EvaluationCorpus
 from sentence import MODEL
@@ -11,6 +12,14 @@ import nltk
 from tabulate import tabulate
 
 ML_CORPUS = EvaluationCorpus()
+
+# These weights are used in sv_weightadd() to influence the word vector
+# depending on its part-of-speech tag. 'NN', 'PRP', etc. are the tags
+# used by NLTK's `pos_tag()'. If a word does not belong to a tag found
+# in `WEIGHTS', a default weight of 0.1 is used (can be changed in the
+# 2nd line).
+WEIGHTS = {'NN': 0.5, 'PRP': 0.5, 'VBP': 0.4, 'VBN': 0.4}
+WEIGHTS = defaultdict(lambda: 0.1, WEIGHTS)
 
 def cosine_to_integer(grade):
     """Since Michell's and Lapata's original evaluation used numbers
@@ -45,26 +54,38 @@ def sv_add(sentence):
     return reduce(lambda x, y: x + y, sentence.values())
 
 
-def sv_weightadd(sentence):
-    """Returns a sentence vector where sv_i is the sum of each i-th
-    component of every word vector.
+def sv_weightadd(sentence, weights=WEIGHTS):
+    """Returns a weightened sentence vector where each individual word
+    vector is multiplied by a factor depending on their POS tag. Weights
+    are determined from a defaultdict of NLTK POS tags, e.g.
+
+    >>> from collections import defaultdict
+    >>> weights = {'NN': 0.9, 'VNB': 0.5}
+    >>> weights = defaultdict(lambda: 0.1, weights)
+
+    A defaultdict is used so that all words a multiplied by a standard
+    factor (in this case: 0.1), and you only have to specify those tags
+    that need another factor.
+
+    All weightened word vectors are then sumed up into a sentence
+    vector.
 
     :params: sentence: The sentence whose sentence vector to calculate
     :type: sentence: Sentence
+
+    :params: weights: Factors describing how to weight a word
+    :type: weights: defaultddict
+
     :rtype: float
     """
-
 
     tagged_words = nltk.pos_tag(str(sentence).split())
     word_vectors = [deepcopy(vector) for vector in sentence.values()]
 
+    # In the following loop, word[0] is the word and word[1] is the tag
+    # as determined by NLTK's `pos_tag()'.
     for i, word in enumerate(tagged_words):
-        if word[1] == 'VBP' or word[1] == 'VBN':
-            word_vectors[i] *= 0.4
-        elif word[1] == 'NN' or word[1] == 'PRP':
-            word_vectors[i] *= 0.5
-        else:
-            word_vectors[i] *= 0.1
+        word_vectors[i] *= WEIGHTS[word[1]]
 
     return reduce(lambda x, y: x + y, word_vectors)
 
@@ -121,7 +142,7 @@ def evaluate_ml_corpus(corpus=ML_CORPUS):
 
     for v in corpus:
         grades.append([similarity(v[0], v[1]),
-                       similarity(v[0], v[1], sv_weightadd)
+                       similarity(v[0], v[1], sv_weightadd),
                        similarity(v[0], v[1], sv_multiply)])
 
     print(tabulate([(v[0], v[1], v[2],
