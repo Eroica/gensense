@@ -103,7 +103,9 @@ def sv_multiply(sentence):
                   sentence.values())
 
 def sv_kintsch(sentence):
-    """
+    """Returns an additive sentence vector that is extended by an
+    additional word vector. That word vector is the vector of the
+    closest word of the predicate, as determined by NLTK's
     """
 
 
@@ -137,6 +139,33 @@ def similarity(sentence1, sentence2, sv_function=sv_add):
 def evaluate_ml_corpus(corpus=ML_CORPUS):
     """
     """
+
+    similarities = []
+
+    # `v' is a triple of a sentence-sentence-similarity in Mitchell's
+    # and Lapata's evaluation corpus, so v[0], v[1], etc. is used to
+    # access each individual item.
+    for i, v in enumerate(corpus):
+        add_cosine = similarity(v[0], v[1])
+        multiply_cosine = similarity(v[0], v[1], sv_multiply)
+        weightadd_cosine = similarity(v[0], v[1], sv_weightadd)
+
+        similarities.append([v[0], v[1], v[2],
+                             cosine_to_integer(add_cosine),
+                             cosine_to_integer(multiply_cosine),
+                             cosine_to_integer(weightadd_cosine)])
+
+        # Every 20 lines (or when the corpus reached its last line),
+        # print the sentence similarities
+        if i % 20 == 0 or i == len(corpus) - 1:
+            print(tabulate(similarities,
+                           headers=["1st Sentence", "2nd Sentence", "M&L",
+                                    "Add", "W.Add", "Mult.", "Kintsch"]))
+            print("")
+
+            # Flush the buffer for the next 20 lines
+            similarities = []
+    return
 
     grades = []
 
