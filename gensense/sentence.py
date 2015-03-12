@@ -85,6 +85,22 @@ class Sentence(OrderedDict):
 
         return " ".join((x for x in self.keys()))
 
+    def __mul__(self, i):
+        """
+        """
+
+        for vector in self.values():
+            vector *= i
+
+        return self
+
+    def __rmul__(self, i):
+        """
+        """
+
+        return self.__mul__(self, i)
+
+
     def removeStopWords(self, stop_words=STOP_WORDS):
         """Iterates over all words in `self' and removes those found in
         `stop_words'. By default, those stop words found in NLTK's
