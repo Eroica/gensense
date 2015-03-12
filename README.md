@@ -8,7 +8,7 @@ Its goal is to assign "senses" to sentences, and thus be able to compare whether
 1.  *"I was feeding the dog."*
 2.  *"I was feeding the cat."*
 
-These two sentences' meanings are quite different, even though only a single word has been interchanged. Contrarily, *"The dog was fed by me."* is similar to sentence 1, but this time using a different word order.
+These two sentences' meanings are quite different, even though only a single word has been interchanged. Contrarily, *"The dog was fed by me."* is similar to sentence 1, but this time is using a different word order.
 
 Humans can easily understand the similarity between sentence 1 and its passive form---computers, on the other hand, not so much. We try to implement some basic methods using the Python package `gensim` that allow us to extract the sense of a given sentence and compare them to others.
 
@@ -23,8 +23,3 @@ Appendix
 --------
 
 *   *Michell & Lapata 2008: Vector-based Models of Semantic Composition*: http://www.aclweb.org/anthology/P08-1028
-
-License
--------
-
-Source code and README: Copyright 2015 Sebastian Spaar
