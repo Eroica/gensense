@@ -63,7 +63,7 @@ def sv_weightadd(sentence, weights=WEIGHTS):
     >>> weights = {'NN': 0.9, 'VNB': 0.5}
     >>> weights = defaultdict(lambda: 0.1, weights)
 
-    A defaultdict is used so that all words a multiplied by a standard
+    A defaultdict is used so that all words are multiplied by a standard
     factor (in this case: 0.1), and you only have to specify those tags
     that need another factor.
 
