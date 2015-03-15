@@ -6,7 +6,7 @@ Semantic Composition''
 
 from sentence import Sentence
 
-class EvaluationCorpus(list):
+class EvaluationCorpus(dict):
     """This class holds every sentence pair of Mitchell's and Lapata's
     evaluation file. Each pair is represented by a list of 3 elements:
     The two sentences being compared, and their similarity grade (an
@@ -31,17 +31,15 @@ class EvaluationCorpus(list):
 
         super(EvaluationCorpus, self).__init__()
 
-        with open("share/share.html") as f:
+        with open(evaluation_file) as f:
             # Skip the first line, as it only contains some information
             # on how each line is structured
             next(f)
 
             for line in f:
-                eval_line = line.split()[3:]
-
-                sentence_left = Sentence(" ".join(eval_line[0:2]))
-                sentence_right = Sentence(" ".join(eval_line[2:4]))
-
-                self.append([sentence_left,
-                             sentence_right,
-                             eval_line[-1]])
+                eval_line = line.split()
+                self.setdefault(eval_line[0], []).append(
+                    [Sentence(" ".join(eval_line[3:5])),
+                     Sentence(" ".join(eval_line[5:7])),
+                     eval_line[-1]]
+                )
