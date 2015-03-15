@@ -1,6 +1,7 @@
 from __future__ import print_function
 from copy import deepcopy
 from collections import defaultdict
+from tabulate import tabulate
 
 from corpus import EvaluationCorpus
 from sentence import MODEL
@@ -9,7 +10,6 @@ import scipy.spatial
 import numpy
 import math
 import nltk
-from tabulate import tabulate
 
 ML_CORPUS = EvaluationCorpus()
 
@@ -105,8 +105,19 @@ def sv_multiply(sentence):
 def sv_kintsch(sentence):
     """Returns an additive sentence vector that is extended by an
     additional word vector. That word vector is the vector of the
-    closest word of the predicate, as determined by NLTK's
+    closest word of the predicate, as determined by NLTK.
+
+    :params: sentence: The sentence whose sentence vector to calculate
+    :type: sentence: Sentence
+    :rtype: float
     """
+
+    tagged_words = nltk.pos_tag(str(sentence).split())
+    word_vectors = [deepcopy(vector) for vector in sentence.values()]
+
+    for word in tagged_words:
+        pass
+
 
 
 
@@ -142,7 +153,7 @@ def evaluate_ml_corpus(corpus=ML_CORPUS):
 
     similarities = []
 
-    # `v' is a triple of a sentence-sentence-similarity in Mitchell's
+    # `v' is a triple of a sentence-sentence-similarity of Mitchell's
     # and Lapata's evaluation corpus, so v[0], v[1], etc. is used to
     # access each individual item.
     for i, v in enumerate(corpus):
@@ -165,18 +176,3 @@ def evaluate_ml_corpus(corpus=ML_CORPUS):
 
             # Flush the buffer for the next 20 lines
             similarities = []
-    return
-
-    grades = []
-
-    for v in corpus:
-        grades.append([similarity(v[0], v[1]),
-                       similarity(v[0], v[1], sv_weightadd),
-                       similarity(v[0], v[1], sv_multiply)])
-
-    print(tabulate([(v[0], v[1], v[2],
-                     cosine_to_integer(grades[i][0]),
-                     cosine_to_integer(grades[i][1]),
-                     cosine_to_integer(grades[i][2])) for i, v in enumerate(corpus) if i < 10],
-
-                    headers=["1st Sentence", "2nd Sentence", "M&L", "Add", "WeightAdd", "Multiply"]))

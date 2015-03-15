@@ -140,7 +140,8 @@ class Sentence(OrderedDict):
         self.clusters = [[first_pair[0]]]
         self.cluster_sums = [deepcopy(first_pair[1])]
 
-        # With a probability of 1/(n + len(clusters)), a new cluster is created
+        # With a probability of 1.0 / (1 + len(self.clusters)),
+        # a new cluster is created
         rands = numpy.random.rand(len(self))
         pnew = 1.0
 
