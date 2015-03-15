@@ -1,4 +1,5 @@
-"""
+"""This module implements a `Sentence' class that is used to store a
+sentence and its vector space representation of each
 
 """
 
@@ -12,8 +13,10 @@ from collections import OrderedDict
 from nltk.corpus import stopwords
 
 DEBUG = True
+
 # STOP_WORDS = set("for a an of the and to in".split())
 STOP_WORDS = stopwords.words("english")
+
 MODEL = gensim.models.word2vec.Word2Vec.load("share/vectors.bin")
 
 class Sentence(OrderedDict):

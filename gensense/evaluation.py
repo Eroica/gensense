@@ -5,6 +5,7 @@ from tabulate import tabulate
 
 from corpus import EvaluationCorpus
 from sentence import MODEL
+from sentence import Sentence
 
 import scipy.spatial
 import numpy
@@ -102,7 +103,7 @@ def sv_multiply(sentence):
     return reduce(lambda x, y: numpy.multiply(x, y),
                   sentence.values())
 
-def sv_kintsch(sentence):
+def sv_kintsch(sentence, model=MODEL):
     """Returns an additive sentence vector that is extended by an
     additional word vector. That word vector is the vector of the
     closest word of the predicate, as determined by NLTK.
@@ -113,13 +114,15 @@ def sv_kintsch(sentence):
     """
 
     tagged_words = nltk.pos_tag(str(sentence).split())
-    word_vectors = [deepcopy(vector) for vector in sentence.values()]
+    sentence_vector = reduce(lambda x, y: x + y, sentence.values())
 
     for word in tagged_words:
-        pass
+        if word[1] in "VB VBD VBG VBN VBP VBZ".split():
+            # Look for the most similar word in model
+            closest_word = model.most_similar(word[0])[0][0]
+            sentence_vector += model[closest_word]
 
-
-
+    return sentence_vector
 
 def similarity(sentence1, sentence2, sv_function=sv_add):
     """Returns the cosine similarity between two sentences, calculated
@@ -146,6 +149,47 @@ def similarity(sentence1, sentence2, sv_function=sv_add):
 
     return 1 - scipy.spatial.distance.cosine(sv_function(sentence1),
                                              sv_function(sentence2))
+
+def compare(sentence1, sentence2, sv_function=sv_add):
+    """
+    """
+
+    def get_cluster(sentence):
+        """
+        """
+
+        print('')
+        print("Choose the best cluster for the sentence")
+        print('>', str(sentence))
+        print("or type `0' to re-roll clusters:")
+
+        while True:
+            for i, cluster in enumerate(sentence.clusters):
+                print(i+1, cluster)
+
+            print("0 re-roll clusters")
+            input_cluster = int(input())
+
+            if input_cluster == 0:
+                sentence.clusterize()
+                continue
+
+            try:
+                return sentence.clusters[input_cluster-1]
+            except IndexError:
+                continue
+
+    print("Comparing:\n", ">", str(sentence1), "\n", ">", str(sentence2))
+
+    first_cluster = get_cluster(sentence1)
+    second_cluster = get_cluster(sentence2)
+
+    first_sentence = Sentence(" ".join(s for s in first_cluster))
+    second_sentence = Sentence(" ".join(s for s in second_cluster))
+
+    return 1 - scipy.spatial.distance.cosine(sv_function(first_sentence),
+                                             sv_function(second_sentence))
+
 
 def evaluate_ml_corpus(corpus=ML_CORPUS):
     """
