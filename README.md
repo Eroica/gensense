@@ -66,7 +66,7 @@ We are a little bit closer to our goal that sentence 1 and sentence 3 have a clo
 
 (Also keep in mind that we use the same, simple model every time, namely *text8*, and the quality of the word vectors change depending on the model. On top of that, all of those sentences are fairly short.)
 
-This is where `gensense` comes in. In `gensense`, every sentence is analyzed and clustered into groups of similar meanings. The clustering algorithm is an implementation of the [*Chinese restaurant process*](http://en.wikipedia.org/wiki/Chinese_restaurant_process). This way, we are looking to reduce a sentence's meaning to those words that play the most important role in a sentence. In case of sentence 1, this might be that "a dog is being fed", hence, `dog + fed`. For sentence 2 it is `cat + fed`. For sentence 3---since it is so similar to sentence 1---it is also `dog + fed`! While the rest of words (*by*, *me*, etc.) end up in another cluster.
+This is where `gensense` comes in. In `gensense`, every sentence is analyzed and clustered into groups of similar meanings. The clustering algorithm is an implementation of the [*Chinese restaurant process*](http://en.wikipedia.org/wiki/Chinese_restaurant_process). This way, we are looking to reduce a sentence's meaning to those words that play the most important role in a sentence. In case of sentence 1, this might be that "a dog is being fed", hence, `dog + fed`. For sentence 2 it is `cat + fed`. For sentence 3---since the action taking place is the same as in sentence 1---it is also `dog + fed`! While the rest of words (*by*, *me*, etc.) end up in another cluster.
 
     >>> import gensense
     >>> dog = gensense.sentence.Sentence("i fed the dog")
