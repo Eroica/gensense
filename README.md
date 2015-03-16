@@ -52,7 +52,8 @@ Most of this sentence's meaning is represented by the order of those "unimportan
 
 Other than (hilariously) changing the original meaning of that sentence, it is still problematic to feed these two sentences (stop words removed) into an additive model like the one used before:
 
-    >>> model.n_similarity("i fed dog".split(), "dog fed me".split())0.85002439166352906
+    >>> model.n_similarity("i fed dog".split(), "dog fed me".split())
+    0.85002439166352906
     >>> model.n_similarity("i fed dog".split(), "i fed cat".split())
     0.83910888572432696
 
