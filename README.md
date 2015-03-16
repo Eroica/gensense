@@ -190,48 +190,48 @@ The three most interesting functions here are probably `similarity`, `compare`, 
 
     Sample usage:
 
-    >>> gensense.evaluation.evaluate_ml_corpus(participant="participant162")
-    1st Sentence          2nd Sentence            M&L    +    W.+    *    K.
-    --------------------  --------------------  -----  ---  -----  ---  ----
-    black hair            right hand                1    2      1    2     2
-    high price            low cost                  1    6      5    6     6
-    social event          special circumstance      1    2      1    3     2
-    small house           important part            1    2      1    2     2
-    large number          vast amount               6    5      3    4     5
-    certain circumstance  economic condition        2    3      1    4     3
-    old person            elderly lady              4    3      1    3     3
-    little room           similar result            1    2      1    1     1
-    earlier work          early stage               5    4      3    4     4
-    practical difficulty  cold air                  1    1      1    1     1
-    new law               modern language           1    2      1    2     2
-    new body              significant role          1    2      1    2     2
-    previous day          long period               1    3      1    3     3
-    new technology        public building           2    3      2    3     3
-    social activity       whole system              1    2      1    2     2
-    general principle     basic rule                4    4      2    3     4
-    northern region       industrial area           1    3      2    4     3
-    new information       general level             1    2      2    2     2
-    dark eye              left arm                  1    2      1    2     2
-    high point            particular case           1    3      1    3     3
+        >>> gensense.evaluation.evaluate_ml_corpus(participant="participant162")
+        1st Sentence          2nd Sentence            M&L    +    W.+    *    K.
+        --------------------  --------------------  -----  ---  -----  ---  ----
+        black hair            right hand                1    2      1    2     2
+        high price            low cost                  1    6      5    6     6
+        social event          special circumstance      1    2      1    3     2
+        small house           important part            1    2      1    2     2
+        large number          vast amount               6    5      3    4     5
+        certain circumstance  economic condition        2    3      1    4     3
+        old person            elderly lady              4    3      1    3     3
+        little room           similar result            1    2      1    1     1
+        earlier work          early stage               5    4      3    4     4
+        practical difficulty  cold air                  1    1      1    1     1
+        new law               modern language           1    2      1    2     2
+        new body              significant role          1    2      1    2     2
+        previous day          long period               1    3      1    3     3
+        new technology        public building           2    3      2    3     3
+        social activity       whole system              1    2      1    2     2
+        general principle     basic rule                4    4      2    3     4
+        northern region       industrial area           1    3      2    4     3
+        new information       general level             1    2      2    2     2
+        dark eye              left arm                  1    2      1    2     2
+        high point            particular case           1    3      1    3     3
 
-    1st Sentence       2nd Sentence            M&L    +    W.+    *    K.
-    -----------------  --------------------  -----  ---  -----  ---  ----
-    short time         rural community           1    1      1    1     1
-    different kind     various form              6    4      3    3     4
-    hot weather        further evidence          1    1      1    1     1
-    central authority  local office              1    3      2    2     3
-    economic problem   new situation             1    3      1    4     3
-    effective way      efficient use             5    5      2    4     5
-    new life           early age                 5    3      1    3     3
-    political action   economic development      3    4      2    3     4
-    european state     present position          1    3      2    3     3
-    early evening      good effect               1    1      1    1     2
-    major issue        american country          1    2      1    1     2
-    older man          elderly woman             2    4      3    5     4
-    better job         good place                3    4      2    3     4
-    federal assembly   national government       6    5      4    5     5
-    whole country      different part            1    3      1    4     3
-    large quantity     great majority            5    3      1    2     3
+        1st Sentence       2nd Sentence            M&L    +    W.+    *    K.
+        -----------------  --------------------  -----  ---  -----  ---  ----
+        short time         rural community           1    1      1    1     1
+        different kind     various form              6    4      3    3     4
+        hot weather        further evidence          1    1      1    1     1
+        central authority  local office              1    3      2    2     3
+        economic problem   new situation             1    3      1    4     3
+        effective way      efficient use             5    5      2    4     5
+        new life           early age                 5    3      1    3     3
+        political action   economic development      3    4      2    3     4
+        european state     present position          1    3      2    3     3
+        early evening      good effect               1    1      1    1     2
+        major issue        american country          1    2      1    1     2
+        older man          elderly woman             2    4      3    5     4
+        better job         good place                3    4      2    3     4
+        federal assembly   national government       6    5      4    5     5
+        whole country      different part            1    3      1    4     3
+        large quantity     great majority            5    3      1    2     3
 
 
 Appendix
