@@ -39,17 +39,17 @@ class Sentence(OrderedDict):
         >>> s
         Sentence([('this', [1, 1, 1]), ('is', [1, 0, 1]), ('an', [0, 0, 1]), ('example', [0, 1, 0])])
 
-        :params: sentence: A sentence string
-        :type: sentence: str
+        :param sentence: A sentence string
+        :type sentence: str
 
-        :params: model:
+        :param model:
             A model created by gensim.models.word2vec.Word2Vec()
-        :type: model : gensim.models.word2vec.Word2Vec
+        :type model : gensim.models.word2vec.Word2Vec
 
-        :params: strict=False:
+        :param strict=False:
             (Optional) specifies whether words not found in `model'
             should be ignored. If True, Sentence creation will abort.
-        :type: strict=False: bool
+        :type strict=False: bool
 
         :rtype: Sentence
         """
@@ -112,9 +112,9 @@ class Sentence(OrderedDict):
         This method operates on this object's state and does not
         return anything.
 
-        :params: stop_words:
+        :param stop_words:
             List of strings of words that can be removed
-        :type: stop_words: list
+        :type stop_words: list
 
         :Example:
 

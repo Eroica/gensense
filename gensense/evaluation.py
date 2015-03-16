@@ -47,8 +47,8 @@ def sv_add(sentence):
     """Returns a sentence vector where sv_i is the sum of each i-th
     component of every word vector.
 
-    :params: sentence: The sentence whose sentence vector to calculate
-    :type: sentence: Sentence
+    :param sentence: The sentence whose sentence vector to calculate
+    :type sentence: Sentence
     :rtype: float
     """
 
@@ -71,11 +71,11 @@ def sv_weightadd(sentence, weights=WEIGHTS):
     All weightened word vectors are then sumed up into a sentence
     vector.
 
-    :params: sentence: The sentence whose sentence vector to calculate
-    :type: sentence: Sentence
+    :param sentence: The sentence whose sentence vector to calculate
+    :type sentence: Sentence
 
-    :params: weights: Factors describing how to weight a word
-    :type: weights: defaultddict
+    :param weights: Factors describing how to weight a word
+    :type weights: defaultddict
 
     :rtype: float
     """
@@ -95,8 +95,8 @@ def sv_multiply(sentence):
     """Returns a sentence vector where sv_i is the product of all i-th
     components of every word vector.
 
-    :params: sentence: The sentence whose sentence vector to calculate
-    :type: sentence: Sentence
+    :param sentence: The sentence whose sentence vector to calculate
+    :type sentence: Sentence
     :rtype: float
     """
 
@@ -108,8 +108,8 @@ def sv_kintsch(sentence, model=MODEL):
     additional word vector. That word vector is the vector of the
     closest word of the predicate, as determined by NLTK.
 
-    :params: sentence: The sentence whose sentence vector to calculate
-    :type: sentence: Sentence
+    :param sentence: The sentence whose sentence vector to calculate
+    :type sentence: Sentence
     :rtype: float
     """
 
@@ -134,14 +134,14 @@ def similarity(sentence1, sentence2, sv_function=sv_add):
     vector (e.g., by multiplying each component instead of adding them)
     can be used as a 3rd argument.
 
-    :params: sentence1: A sentence
-    :type: sentence1: Sentence
+    :param sentence1: A sentence
+    :type sentence1: Sentence
 
-    :params: sentence2: Another sentence
-    :type: sentence2: Sentence
+    :param sentence2: Another sentence
+    :type sentence2: Sentence
 
-    :params: sv_function: Function calculating sentence vector
-    :type: sv_function: function
+    :param sv_function: Function calculating sentence vector
+    :type sv_function: function
 
     :returns: Number between 0.0 and 1.0 (cosine similarity)
     :rtype: float
@@ -151,13 +151,25 @@ def similarity(sentence1, sentence2, sv_function=sv_add):
                                              sv_function(sentence2))
 
 def compare(sentence1, sentence2, sv_function=sv_add):
-    """
+    """Similar to `gensense.evaluation.similarity', but takes the
+    sentence clusters into account for calculation. Right now, this
+    function asks you to choose the most relevant cluster, but this can
+    be automated by training a neural network on it.
+
+    :param sentence1: A sentence
+    :type sentence1: Sentence
+
+    :param sentence2: Another sentence
+    :type sentence2: Sentence
+
+    :param sv_function: Function calculating sentence vector
+    :type sv_function: function
+
+    :returns: Number between 0.0 and 1.0 (cosine similarity)
+    :rtype: float
     """
 
     def get_cluster(sentence):
-        """
-        """
-
         print('')
         print("Choose the best cluster for the sentence")
         print('>', str(sentence))
@@ -192,7 +204,23 @@ def compare(sentence1, sentence2, sv_function=sv_add):
 
 
 def evaluate_ml_corpus(corpus=ML_CORPUS, participant="participant1"):
-    """
+    """Iterates over Mitchell's and Lapata's evaluation corpus, and
+    calculates a sentence similarity for each similarity function:
+    sv_add, sv_weightadd, sv_multiply, and sv_kintsch.
+
+    Cosine similarities are mapped to a scale from 1 to 7, to be able to
+    compare them with Mitchell' and Lapata's score.
+
+    There are 162 participant in the orignal evaluation corpus. By
+    default, participant 1's results are used as a comparison. To
+    get another participant, change the `participant' argument.
+
+    :param corpus: M&L's evaluation corpus
+    :type corpus: EvaluationCorpus
+
+    :param participant:
+        The participant whose sentences should be calculated.
+    :type participant: str
     """
 
     similarities = []
