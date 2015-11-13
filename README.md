@@ -1,7 +1,7 @@
 gensense
 ========
 
-`gensense` is a current university project for the lecture *Formal Semantics* in Computational Linguistics at Heidelberg University during the winter semester of 2014/2015. This project is developed by **Darmin Spahic** and [Sebastian Spaar](https://github.com/Eroica).
+`gensense` is a current university project for the lecture *Formal Semantics* in Computational Linguistics at Heidelberg University during the winter semester of 2014/2015. This project was developed by [Darmin Spahic](https://github.com/darminspahic) and [Sebastian Spaar](https://github.com/Eroica).
 
 Its goal is to assign "senses" to sentences, and thus be able to compare whether two given sentences have a similar meaning. Taking these two example sentences:
 
